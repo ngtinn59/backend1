@@ -156,7 +156,7 @@ class JobController extends Controller
         // $job['updated_at'] = Carbon::parse($job['updated_at'])->toDateTimeString();
     }
     public function apply(Request $req)
-    {   
+    {
         $file = $req->file('cv');
         $extension = $file->getClientOriginalExtension();
         $user = Auth::user();

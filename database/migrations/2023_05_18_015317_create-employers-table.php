@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('address')->nullable();
             $table->unsignedInteger('min_employees')->nullable();
             $table->unsignedInteger('max_employees')->nullable();
-            //$table->unsignedInteger('founded_year')->nullable();
+            $table->unsignedInteger('founded_year')->nullable();
             $table->string('contact_name', 60)->nullable();
             $table->string('phone', 15)->nullable();
             $table->string('website')->nullable();

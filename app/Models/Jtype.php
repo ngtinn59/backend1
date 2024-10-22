@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Jtype extends Model
 {
     use HasFactory;
+    protected $table = 'jtypes';
+
+    protected $primaryKey = 'id';
+    protected $guarded = [];
 
     public function jobs()
     {

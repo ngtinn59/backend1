@@ -9,6 +9,7 @@ class Industry extends Model
 {
     use HasFactory;
     protected $table = 'industries';
+    protected $guarded = [];
     protected $singular = 'industry';
 
     public function jobs()

@@ -19,12 +19,17 @@ class EmployerController extends Controller
     {
         $keyw = $request->query('keyword');
         $query = Employer::query();
+
+        $query->where('is_active', 1);
+
         if ($keyw) {
             $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($keyw) . '%']);
         }
+
         $res = $query->paginate(6);
 
         return response()->json($res);
+
     }
 
     public function show($id)

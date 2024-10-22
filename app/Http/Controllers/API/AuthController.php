@@ -96,6 +96,14 @@ class AuthController extends Controller
                 $user['name'] = $name;
             }
 
+            // Nếu role là 2 (nhà tuyển dụng), lấy thêm thông tin từ model employer
+            if ($request->role == 2) {
+                $employerInfo = User::join('employers', 'users.id', '=', 'user_id')
+                    ->where('users.id', $user->id)
+                    ->select('name', 'website') // Chọn các trường cần thiết từ bảng employers
+                    ->first();
+                $user['employer_info'] = $employerInfo;
+            }
 
             DB::commit();
 
@@ -120,6 +128,7 @@ class AuthController extends Controller
             ], 500);
         }
     }
+
 
 
     public function register(Request $request)
@@ -254,7 +263,7 @@ class AuthController extends Controller
         try {
             // Tạo user mới với dữ liệu từ request
             $user = User::create([
-                'email' => $request->name,
+                'email' => $request->email,
                 'role' => 2,
                 'is_active' => 1,
                 'password' => Hash::make($request->password),
@@ -267,6 +276,7 @@ class AuthController extends Controller
                 'name' => $request->name,
                 'phone' => $request->phone,
             ]);
+
 
             DB::commit();
 

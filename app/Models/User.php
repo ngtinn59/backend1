@@ -9,7 +9,7 @@ use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject as JWTSubject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable implements JWTSubject
+class User extends Authenticatable implements JWTSubject, MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -66,4 +66,7 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasOne(Employer::class);
     }
+
+
+
 }
