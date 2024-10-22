@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\Api\Candidates\ObjectivesController;
 use App\Http\Controllers\EducationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -45,6 +46,7 @@ Route::controller(AuthController::class)->group(function () {
     Route::get('logout', 'logout');
     Route::get('refresh', 'refresh');
     Route::get('getMe', 'me');
+    Route::post('employerRegister', 'employerRegister');
 });
 
 Route::controller(EmployerController::class)->prefix('companies')->group(function () {
@@ -166,6 +168,10 @@ Route::controller(OtherController::class)->prefix('others')->group(function () {
     Route::delete('{id}', 'destroy');
     Route::patch('{id}', 'update');
 });
+
+Route::resource('/objectives', ObjectivesController::class);
+
+
 Route::controller(ResumeController::class)->prefix('resumes')->group(function () {
     Route::get('getByCurrentCandidate', 'getByCurrentCandidate');
     Route::get('{id}/getById', 'getById');

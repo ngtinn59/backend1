@@ -15,7 +15,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id')->primary();
             $table->unsignedBigInteger('user_id');
             $table->string('name', 150);
-            $table->string('address');
+            $table->string('address')->nullable();
             $table->unsignedInteger('min_employees')->nullable();
             $table->unsignedInteger('max_employees')->nullable();
             //$table->unsignedInteger('founded_year')->nullable();
@@ -23,10 +23,10 @@ return new class extends Migration
             $table->string('phone', 15)->nullable();
             $table->string('website')->nullable();
             $table->longText('description')->nullable();
-            $table->text('logo');
+            $table->text('logo')->nullable();
             $table->text('image')->nullable();
-            $table->boolean('is_hot');
-            $table->boolean('is_active');
+            $table->boolean('is_hot')->default(false);
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Education;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class EducationController extends Controller
 {
@@ -36,7 +37,40 @@ class EducationController extends Controller
 
     public function create(Request $req)
     {
+        // Xác thực dữ liệu đầu vào
+        $validator = Validator::make($req->all(), [
+            'school' => 'required|string|max:255',
+            'major' => 'required|string|max:255',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after:start_date',
+            'description' => 'nullable|string',
+        ], [
+            'school.required' => 'Trường là bắt buộc.',
+            'school.string' => 'Trường phải là chuỗi văn bản.',
+            'school.max' => 'Trường không được vượt quá 255 ký tự.',
+            'major.required' => 'Chuyên ngành là bắt buộc.',
+            'major.string' => 'Chuyên ngành phải là chuỗi văn bản.',
+            'major.max' => 'Chuyên ngành không được vượt quá 255 ký tự.',
+            'start_date.required' => 'Ngày bắt đầu là bắt buộc.',
+            'start_date.date' => 'Ngày bắt đầu không hợp lệ.',
+            'end_date.required' => 'Ngày kết thúc là bắt buộc.',
+            'end_date.date' => 'Ngày kết thúc không hợp lệ.',
+            'end_date.after' => 'Ngày kết thúc phải sau ngày bắt đầu.',
+            'description.string' => 'Mô tả phải là chuỗi văn bản.',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'error' => $validator->errors(),
+                'status_code' => 422, // 422 Unprocessable Entity
+            ], 422);
+        }
+
+        // Lấy ID của ứng viên
         $candidate_id = Auth::user()->id;
+
+        // Tạo bản ghi Education
         Education::create([
             "candidate_id" => $candidate_id,
             "school" => $req->school,
@@ -46,8 +80,13 @@ class EducationController extends Controller
             "description" => $req->description,
         ]);
 
-        return response()->json("created successfully");
+        return response()->json([
+            'success' => true,
+            'message' => 'Tạo thành công.',
+            'status_code' => 201,
+        ]);
     }
+
     public function destroy($id)
     {
         Education::findOrFail($id)->delete();
