@@ -57,6 +57,15 @@ class AuthController extends Controller
                 ], 404);
             }
 
+            // Kiểm tra trạng thái tài khoản (is_active)
+            if ($user->is_active == 0) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Tài khoản đã bị chặn, vui lòng liên hệ quản trị viên.',
+                    'status_code' => 403, // 403 Forbidden
+                ], 403);
+            }
+
             // Kiểm tra mật khẩu có khớp không
             if (!Hash::check($request->password, $user->password)) {
                 return response()->json([

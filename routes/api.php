@@ -1,13 +1,16 @@
 <?php
 
 use App\Http\Controllers\ActivityController;
-use App\Http\Controllers\Api\Admin\AdmiAccountsController;
 use App\Http\Controllers\Api\Admin\AdminAccountsController;
+use App\Http\Controllers\Api\Admin\AdminCandidateController;
+use App\Http\Controllers\Api\Admin\AdminIndustriesController;
 use App\Http\Controllers\Api\Admin\AdminJobLevelsController;
+use App\Http\Controllers\Api\Admin\AdminJobsController;
 use App\Http\Controllers\Api\Admin\AdminJobtypesController;
 use App\Http\Controllers\Api\Admin\AdminLocationController;
 use App\Http\Controllers\Api\Admin\InductionsController;
 use App\Http\Controllers\Api\Candidates\ObjectivesController;
+use App\Http\Controllers\Api\Employer\EmployerCompanyController;
 use App\Http\Controllers\EducationController;
 use App\Http\Middleware\CheckAdminRole;
 use Illuminate\Http\Request;
@@ -186,14 +189,24 @@ Route::controller(ResumeController::class)->prefix('resumes')->group(function ()
     Route::post('update', 'update');
     Route::delete('{id}', 'destroy');
 });
-Route::resource('employers/companies', \App\Http\Controllers\Api\Employer\EmployerController::class);
+Route::get('employers/companies/', [EmployerCompanyController::class, 'index']);
+Route::put('employers/companies/{company}', [EmployerCompanyController::class, 'update']);
 
 Route::middleware(CheckAdminRole::class)->prefix('admin')->group(function () {
-    Route::resource('/inductions', InductionsController::class);
+    Route::resource('/industries', AdminIndustriesController::class);
     Route::resource('/job-types', AdminJobtypesController::class);
     Route::resource('/locations', AdminLocationController::class);
     Route::resource('/job-levels', AdminJobLevelsController::class);
-    Route::resource('/accounts', AdminAccountsController::class);
+
+    Route::get('/candidates', [AdminCandidateController::class, 'index']);
+    Route::get('/candidates/{id}', [AdminCandidateController::class, 'show']);
+    Route::post('/candidates', [AdminCandidateController::class, 'store']);
+    Route::put('/candidates/{id}', [AdminCandidateController::class, 'update']);
+    Route::delete('/candidates/{id}', [AdminCandidateController::class, 'destroy']);
+
+    Route::get('/jobs', [AdminJobsController::class, 'index']);
+    Route::get('/jobs/{id}', [AdminJobsController::class, 'show']);
+    Route::post('/jobs/', [AdminJobsController::class, 'create']);
 
 });
 

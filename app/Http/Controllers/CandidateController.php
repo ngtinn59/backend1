@@ -43,7 +43,7 @@ class CandidateController extends Controller
         if ($file) {
             $extension = $file->getClientOriginalExtension();
             $fname = 'avatar_candidate_' . '_' . $candidate->id . '.' . $extension;
-            $path =  env('APP_URL') . '/storage/' . $file->storeAs('avatar_images', $fname, 'public');
+            $path =  'http://101.101.96.43/' . '/storage/' . $file->storeAs('avatar_images', $fname, 'public');
             $candidate->avatar = $path;
         }
         if ($req->delete_img) {

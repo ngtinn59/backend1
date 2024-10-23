@@ -19,7 +19,7 @@ return new class extends Migration
             $table->unsignedTinyInteger('gender')->nullable();
             $table->date('dob')->nullable();
             $table->char('phone', 10)->nullable();
-            $table->string('email');
+            $table->string('email')->nullable();
             $table->string('address')->nullable();
             $table->text('link')->nullable();
             $table->text('objective')->nullable();

@@ -8,8 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Job extends Model
 {
     use HasFactory;
+    protected $table = 'jobs';
 
+    protected $primaryKey = 'id';
     protected $guarded = [];
+
 
     public function employer()
     {

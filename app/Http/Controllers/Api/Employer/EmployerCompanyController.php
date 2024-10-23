@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
-class EmployerController extends Controller
+class EmployerCompanyController extends Controller
 {
     public function logo(Request $request)
     {
@@ -141,7 +141,7 @@ class EmployerController extends Controller
             ], 400);
         }
 
-        $company = Employer::where('user_id', Auth::user()->id)->first();
+        $company = Employer::where('user_id', auth()->user()->id)->first();
 
         if (!$company) {
             return response()->json([
@@ -225,7 +225,25 @@ class EmployerController extends Controller
         ]);
     }
 
+    public function index(Request $request)
+    {
+        $user_id = auth()->user()->id;
 
+        // Lấy danh sách công ty của nhà tuyển dụng theo user_id
+        $companies = Employer::where('user_id', $user_id)->get();
 
+        // Nếu không tìm thấy công ty
+        if ($companies->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No companies found for this employer.',
+            ], 404);
+        }
 
+        // Trả về danh sách công ty dưới dạng JSON
+        return response()->json([
+            'success' => true,
+            'data' => $companies,
+        ], 200);
+    }
 }
